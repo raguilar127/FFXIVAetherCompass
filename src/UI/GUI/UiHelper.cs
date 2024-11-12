@@ -29,9 +29,6 @@ namespace AetherCompass.UI.GUI
         public static bool WorldToScreenPos(Vector3 worldPos, out Vector2 screenPos)
             => Projection.WorldToScreen(worldPos, out screenPos);
 
-        internal static bool WorldToScreenPos(Vector3 worldPos, out Vector2 screenPos, out Vector3 pCoordsRaw)
-            => Projection.WorldToScreen(worldPos, out screenPos, out pCoordsRaw);
-
         // NDC used in UI3DModule.ObjectInfo for object screen positions
         public static Vector3 TranslateNormalisedCoordinates(
             Vector3 pos3norm, bool reverseY = true)

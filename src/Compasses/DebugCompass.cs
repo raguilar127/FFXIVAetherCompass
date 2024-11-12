@@ -29,15 +29,15 @@ namespace AetherCompass.Compasses
 #if DEBUG
             Plugin.Config.DebugTestAllGameObjects ||
 #endif
-            o->ObjectID == Plugin.ClientState.LocalPlayer?.ObjectId
-            || o->ObjectKind == (byte)ObjectKind.EventObj 
+            o->EntityId == Plugin.ClientState.LocalPlayer?.EntityId
+            || o->ObjectKind == ObjectKind.EventObj 
             //|| o->ObjectKind == (byte)ObjectKind.EventNpc
-            || o->ObjectKind == (byte)ObjectKind.GatheringPoint
-            || o->ObjectKind == (byte)ObjectKind.Aetheryte
-            || o->ObjectKind == (byte)ObjectKind.AreaObject
-            || o->ObjectKind == (byte)ObjectKind.CardStand
-            || o->ObjectKind == (byte)ObjectKind.MjiObject
-            || o->ObjectKind == (byte)ObjectKind.BattleNpc
+            || o->ObjectKind == ObjectKind.GatheringPoint
+            || o->ObjectKind == ObjectKind.Aetheryte
+            || o->ObjectKind == ObjectKind.AreaObject
+            || o->ObjectKind == ObjectKind.CardStand
+            || o->ObjectKind == ObjectKind.MjiObject
+            || o->ObjectKind == ObjectKind.BattleNpc
             );
 
         protected override unsafe CachedCompassObjective CreateCompassObjective(GameObject* obj)
@@ -56,7 +56,7 @@ namespace AetherCompass.Compasses
             return new(() =>
             {
                 ImGui.Text($"Object: {debugObjective.Name}");
-                ImGui.BulletText($"ObjectId: {debugObjective.GameObjectId.ObjectID}, type {debugObjective.GameObjectId.Type}");
+                ImGui.BulletText($"ObjectId: {debugObjective.GameObjectId.ObjectId}, type {debugObjective.GameObjectId.Type}");
                 ImGui.BulletText($"ObjectKind: {debugObjective.ObjectKind}");
                 ImGui.BulletText($"NpcId: {debugObjective.NpcId} DataId: {debugObjective.DataId}");
                 ImGui.BulletText($"2D-Distance: {debugObjective.Distance2D:0.0}");
@@ -88,14 +88,14 @@ namespace AetherCompass.Compasses
             if (objective.IsEmpty()) return null;
             // These are already handled by the Draw...Default method,
             // here is just for debug record
-            UiHelper.WorldToScreenPos(objective.Position, out var screenPos, out var pCoordsRaw);
+            UiHelper.WorldToScreenPos(objective.Position, out var screenPos);
             screenPos.Y -= ImGui.GetMainViewport().Size.Y / 50; // slightly raise it up from hitbox screen pos
 
             string info = $"name={objective.Name}, " +
                 $"worldPos=<{objective.Position.X:0.00}, {objective.Position.Y:0.00}, {objective.Position.Z:0.00}, " +
                 $"dist={objective.Distance3D:0.0}\n" +
                 $"sPosUnfixed=<{screenPos.X:0.0}, {screenPos.Y:0.0}>, " +
-                $"raw=<{pCoordsRaw.X:0.0}, {pCoordsRaw.Y:0.0}, {pCoordsRaw.Z:0.0}>\n" +
+                //$"raw=<{pCoordsRaw.X:0.0}, {pCoordsRaw.Y:0.0}, {pCoordsRaw.Z:0.0}>\n" +
                 $"npPos=<{objective.NormalisedNameplatePos.X:0.0}, {objective.NormalisedNameplatePos.Y:0.0}, {objective.NormalisedNameplatePos.Z:0.0}>";
             return GenerateDefaultScreenMarkerDrawAction(objective,
                 markerIconId, DefaultMarkerIconSize, .9f, info, new(1, 1, 1, 1), 0, out _);

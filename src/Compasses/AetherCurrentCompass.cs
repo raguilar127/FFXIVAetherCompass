@@ -56,7 +56,7 @@ namespace AetherCompass.Compasses
         public override unsafe bool IsObjective(GameObject* o)
         {
             if (o == null) return false;
-            if (o->ObjectKind != (byte)ObjectKind.EventObj) return false;
+            if (o->ObjectKind != ObjectKind.EventObj) return false;
             return IsNameOfAetherCurrent(CompassUtil.GetName(o));
         }
 

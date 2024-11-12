@@ -11,6 +11,7 @@ using ImGuiScene;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using Dalamud.Interface.Textures;
 using ObjectInfo = FFXIVClientStructs.FFXIV.Client.UI.UI3DModule.ObjectInfo;
 
 namespace AetherCompass.Compasses
@@ -144,7 +145,7 @@ namespace AetherCompass.Compasses
                     if (token.IsCancellationRequested) token.ThrowIfCancellationRequested();
                     var info = infoArray[i];
                     var obj = info != null ? info->GameObject : null;
-                    if (obj == null || obj->ObjectKind == (byte)ObjectKind.Pc) continue;
+                    if (obj == null || obj->ObjectKind == ObjectKind.Pc) continue;
                     if (!IsObjective(obj)) continue;
                     var objective = CreateCompassObjective(info);
                     ProcessObjectiveInLoop(objective);
@@ -433,19 +434,19 @@ namespace AetherCompass.Compasses
             drawEndPos = new Vector2(drawPos.X + iconHalfSize.X * MathF.Sin(rotation),
                 drawPos.Y + iconHalfSize.Y * MathF.Cos(rotation));
             return icon == null ? null
-                : new(() => ImGui.GetWindowDrawList().AddImageQuad(icon.ImGuiHandle,
+                : new(() => ImGui.GetWindowDrawList().AddImageQuad(icon.GetWrapOrEmpty().ImGuiHandle,
                     p1, p2, p3, p4, new(0, 0), new(1, 0), new(1, 1), new(0, 1), colour));
         }
 
         protected static DrawAction? GenerateScreenMarkerIconDrawAction(
-            IDalamudTextureWrap? icon, Vector2 screenPosRaw, Vector2 iconSizeRaw, 
+            ISharedImmediateTexture? icon, Vector2 screenPosRaw, Vector2 iconSizeRaw, 
             float scale, float alpha, out Vector2 drawEndPos)
         {
             var iconSize = iconSizeRaw * scale;
             drawEndPos = screenPosRaw - iconSize / 2;
             var iconDrawPos = drawEndPos;
             return icon == null ? null 
-                : new(() => ImGui.GetWindowDrawList().AddImage(icon.ImGuiHandle, 
+                : new(() => ImGui.GetWindowDrawList().AddImage(icon.GetWrapOrEmpty().ImGuiHandle, 
                     iconDrawPos, iconDrawPos + iconSize, new(0, 0), new(1, 1), 
                     ImGui.ColorConvertFloat4ToU32(new(1, 1, 1, alpha))));
         }
@@ -454,12 +455,12 @@ namespace AetherCompass.Compasses
             Vector2 screenPosRaw, float scale, float alpha, out Vector2 drawEndPos)
         {
             drawEndPos = screenPosRaw;
-            IDalamudTextureWrap? icon = null;
+            ISharedImmediateTexture? icon = null;
             if (altDiff > 5) icon = Plugin.IconManager.AltitudeHigherIcon;
             if (altDiff < -5) icon = Plugin.IconManager.AltitudeLowerIcon;
             if (icon == null) return null;
             var iconHalfSize = IconManager.AltitudeIconSize * scale / 2;
-            return new(() => ImGui.GetWindowDrawList().AddImage(icon.ImGuiHandle,
+            return new(() => ImGui.GetWindowDrawList().AddImage(icon.GetWrapOrEmpty().ImGuiHandle,
                 screenPosRaw - iconHalfSize, screenPosRaw + iconHalfSize, new(0, 0), new(1, 1), 
                 ImGui.ColorConvertFloat4ToU32(new(1, 1, 1, alpha))));
         }
@@ -505,7 +506,7 @@ namespace AetherCompass.Compasses
             return drawPos;
         }
 
-        private IDalamudTextureWrap? GetMarkerIcon(uint iconId)
+        private ISharedImmediateTexture? GetMarkerIcon(uint iconId)
         {
             compassUsedIconIds.Add(iconId);
             return Plugin.IconManager.GetIcon(iconId);

@@ -33,7 +33,7 @@ namespace AetherCompass.Compasses
             => ZoneWatcher.CurrentTerritoryType?.TerritoryIntendedUse == 1;
 
         public override unsafe bool IsObjective(GameObject* o)
-            => o != null && nmDataMap.TryGetValue(o->DataID, out var data) && data.IsValid
+            => o != null && nmDataMap.TryGetValue(o->BaseId, out var data) && data.IsValid
             && ((data.Rank == NMRank.S && MobHuntConfig.DetectS)
                 || (data.Rank == NMRank.A && MobHuntConfig.DetectA)
                 || (data.Rank == NMRank.B && !CompassUtil.IsHostileCharacter(o) && MobHuntConfig.DetectB)
@@ -41,7 +41,7 @@ namespace AetherCompass.Compasses
             && CompassUtil.IsCharacterAlive(o);
 
         protected override unsafe CachedCompassObjective CreateCompassObjective(GameObject* obj)
-            => obj != null && nmDataMap.TryGetValue(obj->DataID, out var data) && data.IsValid
+            => obj != null && nmDataMap.TryGetValue(obj->BaseId, out var data) && data.IsValid
             ? new MobHunCachedCompassObjective(obj, data.Rank, CompassUtil.IsHostileCharacter(obj))
             : new MobHunCachedCompassObjective(obj, 0, false);
 
@@ -49,7 +49,7 @@ namespace AetherCompass.Compasses
         {
             var obj = info != null ? info->GameObject : null;
             if (obj == null) return new MobHunCachedCompassObjective(obj, 0, false);
-            return nmDataMap.TryGetValue(obj->DataID, out var data) && data.IsValid
+            return nmDataMap.TryGetValue(obj->BaseId, out var data) && data.IsValid
                 ? new MobHunCachedCompassObjective(info, data.Rank, CompassUtil.IsHostileCharacter(obj))
                 : new MobHunCachedCompassObjective(info, 0, false);
         }

@@ -14,7 +14,7 @@ namespace AetherCompass.Common
         public unsafe static string GetName(GameObject* o)
             => o == null ? string.Empty
             //: MemoryHelper.ReadSeString((IntPtr)o->Name, 64).TextValue;  
-            : Marshal.PtrToStringUTF8((IntPtr)o->Name) ?? string.Empty;
+            : o->NameString ?? string.Empty;
 
         public static string ToTitleCase(string s)
             => System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s);

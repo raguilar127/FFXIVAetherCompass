@@ -61,13 +61,13 @@ namespace AetherCompass.Compasses
         public override unsafe bool IsObjective(GameObject* o)
         {
             if (o == null) return false;
-            var kind = (ObjectKind)o->ObjectKind;
-            uint dataId = o->DataID;
+            var kind = o->ObjectKind;
+            uint dataId = o->BaseId;
             if (dataId == 0) return false;
             // NOTE: already considered hidden quests or those not revealed by Todos when filling up objQuestMap
             // TODO: AreaObject???
             if (kind == ObjectKind.EventNpc || kind == ObjectKind.EventObj || kind == ObjectKind.AreaObject)
-                return objQuestMap.ContainsKey(o->DataID);
+                return objQuestMap.ContainsKey(o->BaseId);
             return false;
         }
 

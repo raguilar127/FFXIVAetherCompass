@@ -31,7 +31,7 @@ namespace AetherCompass.Compasses
             CachedCompassObjective objective) => objective.Name;
 
         public override unsafe bool IsObjective(GameObject* o) 
-            => o != null && (o->ObjectKind == (byte)ObjectKind.BattleNpc) 
+            => o != null && (o->ObjectKind == ObjectKind.BattleNpc) 
             && IsEurekanElementalName(CompassUtil.GetName(o));
 
         public override unsafe DrawAction? CreateDrawDetailsAction(CachedCompassObjective objective)

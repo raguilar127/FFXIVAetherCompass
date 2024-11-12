@@ -18,7 +18,7 @@ namespace AetherCompass
     {
         // Plugin Services
         [PluginService]
-        internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+        internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
         [PluginService]
         internal static ISigScanner SigScanner { get; private set; } = null!;
         [PluginService]

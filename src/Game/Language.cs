@@ -1,11 +1,11 @@
 ﻿using Dalamud.Game.Text.Sanitizer;
-using static Dalamud.ClientLanguage;
+using static Dalamud.Game.ClientLanguage;
 
 namespace AetherCompass.Game
 {
     public static class Language
     {
-        public static Dalamud.ClientLanguage ClientLanguage
+        public static Dalamud.Game.ClientLanguage ClientLanguage
             => Plugin.ClientState.ClientLanguage;
 
         public static int GetAdjustedTextMaxLength(int maxLengthEN)

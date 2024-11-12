@@ -8,7 +8,7 @@ namespace AetherCompass.Compasses.Objectives
     public unsafe class CachedCompassObjective
     {
         public readonly IntPtr GameObject;
-        public readonly GameObjectID GameObjectId;
+        public readonly GameObjectId GameObjectId;
         public readonly string Name;
         public readonly uint NpcId;
         public readonly uint DataId;
@@ -26,10 +26,10 @@ namespace AetherCompass.Compasses.Objectives
             GameObject = (IntPtr)obj;
             if (obj != null)
             {
-                GameObjectId = obj->GetObjectID();
+                GameObjectId = obj->GetGameObjectId();
                 Name = CompassUtil.GetName(obj);
-                NpcId = obj->GetNpcID();
-                DataId = obj->DataID;
+                NpcId = obj->GetNameId();
+                DataId = obj->BaseId;
                 Position = obj->Position;
                 Distance3D = CompassUtil.Get3DDistanceFromPlayer(Position);
                 AltitudeDiff = CompassUtil.GetAltitudeDiffFromPlayer(Position);

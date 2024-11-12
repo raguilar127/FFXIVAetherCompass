@@ -3,6 +3,7 @@ using Dalamud.Interface.Utility;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Kernel;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using FFXIVClientStructs.FFXIV.Client.Game.Control;
 
 namespace AetherCompass.Game.SeFunctions
 {
@@ -18,37 +19,7 @@ namespace AetherCompass.Game.SeFunctions
             getMatrixSingleton ??= Marshal.GetDelegateForFunctionPointer<GetMatrixSingletonDelegate>(addr);
             device = Device.Instance();
         }
-
-        public static bool WorldToScreen(Vector3 worldPos, out Vector2 screenPos) => WorldToScreen(worldPos, out screenPos, out _);
-
-        // Used to be a rewrite version of Dalamud's WorldToScreen to fix an off-screen position issue,
-        // but since the Dalamud's version's been fixed in the same way, they are almost identical
-        internal static unsafe bool WorldToScreen(Vector3 worldPos, out Vector2 screenPos, out Vector3 pCoordsRaw)
-        {
-            if (getMatrixSingleton == null)
-                throw new InvalidOperationException("getMatrixSingleton did not initiate correctly");
-
-            var matrixSingleton = getMatrixSingleton();
-            if (matrixSingleton == IntPtr.Zero)
-                throw new InvalidOperationException("Cannot get matrixSingleton");
-
-            var windowPos = ImGuiHelpers.MainViewport.Pos;
-
-            var viewProjectionMatrix = *(Matrix4x4*)(matrixSingleton + 0x1b4);
-            float width = device->Width;
-            float height = device->Height;
-
-            var pCoords = Vector3.Transform(worldPos, viewProjectionMatrix);
-            pCoordsRaw = pCoords;
-
-            screenPos = new Vector2(pCoords.X / MathF.Abs(pCoords.Z), pCoords.Y / MathF.Abs(pCoords.Z));
-
-            screenPos.X = (0.5f * width * (screenPos.X + 1f)) + windowPos.X;
-            screenPos.Y = (0.5f * height * (1f - screenPos.Y)) + windowPos.Y;
-
-            return pCoords.Z > 0 
-                && screenPos.X > windowPos.X && screenPos.X < windowPos.X + width
-                && screenPos.Y > windowPos.Y && screenPos.Y < windowPos.Y + height;
-        }
+        public static bool WorldToScreen(Vector3 worldPos, out Vector2 screenPos) => Plugin.GameGui.WorldToScreen(worldPos, out screenPos);
+        
     }
 }

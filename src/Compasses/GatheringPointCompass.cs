@@ -32,7 +32,7 @@ namespace AetherCompass.Compasses
             ;
 
         public override unsafe bool IsObjective(GameObject* o)
-            => o != null && o->ObjectKind == (byte)ObjectKind.GatheringPoint;
+            => o != null && o->ObjectKind == ObjectKind.GatheringPoint;
 
         public override unsafe DrawAction? CreateDrawDetailsAction(CachedCompassObjective objective)
             => objective.IsEmpty() ? null : new(() =>
