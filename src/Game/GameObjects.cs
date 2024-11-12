@@ -24,9 +24,9 @@ namespace AetherCompass.Game
         private unsafe static readonly GameObjectManager* gameObjMgr 
             = GameObjectManager.Instance();
         internal unsafe static GameObject* ObjectListFiltered
-            => (GameObject*)gameObjMgr->Objects;
+            => gameObjMgr->Objects;
         internal unsafe static int ObjectListFilteredCount
-            => gameObjMgr->Objects.GameObjectsIdSortedCount;
+            => gameObjMgr->Objects.GameObjectIdSortedCount;
 
         static GameObjects()
         {

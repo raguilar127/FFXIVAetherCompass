@@ -93,8 +93,7 @@ namespace AetherCompass.UI.GUI
 
         private async void LoadIconAsync(uint iconId)
         {
-            var icon = await Task.Run(() => Plugin.TextureProvider.GetIcon(iconId));
-            if (icon == null) throw new IconLoadFailException(iconId);
+            var icon = await Task.Run(() => Plugin.IconManager.GetIcon(iconId)) ?? throw new IconLoadFailException(iconId);
             map.TryAdd(iconId, new(() => icon, 
                 System.Threading.LazyThreadSafetyMode.ExecutionAndPublication));
         }
